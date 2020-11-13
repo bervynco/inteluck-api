@@ -19,6 +19,7 @@ const Route = use('Route')
 Route.on('/').render('welcome')
 
 Route.get('/getOrderList', 'MainController.getOrderList')
+Route.get('/getDeliveryStatus', 'DeliveryStatusController.getDeliveryStatusList')
 Route.post('/addOrder','MainController.addOrder')
-Route.post('/editOrder','MainController.editOrder')
+Route.post('/updateOrder','MainController.editOrder')
 Route.post('/deleteOrder','MainController.deleteOrder')
