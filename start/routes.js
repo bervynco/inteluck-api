@@ -20,6 +20,8 @@ Route.on('/').render('welcome')
 
 Route.get('/getOrderList', 'MainController.getOrderList')
 Route.get('/getDeliveryStatus', 'DeliveryStatusController.getDeliveryStatusList')
+
+Route.get('/getOrderDetails/:id','MainController.getOrderDetails');
 Route.post('/addOrder','MainController.addOrder')
 Route.post('/updateOrder','MainController.editOrder')
 Route.post('/deleteOrder','MainController.deleteOrder')

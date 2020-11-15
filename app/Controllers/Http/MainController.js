@@ -1,7 +1,7 @@
 'use strict'
 const OrderList = require('../../Models/Orders');
 const Delivery = require('../../Models/Delivery');
-const {getAllOrders, addOrder, updateOrder, deleteOrder} = new OrderList();
+const {getAllOrders, getSpecificOrder, addOrder, updateOrder, deleteOrder} = new OrderList();
 
 const {addDelivery} = new Delivery();
 class MainController {
@@ -49,8 +49,6 @@ class MainController {
                     }
                 }
             });
-
-            console.log(await returnArray);
             response.json(await returnArray);
 		} catch (error) {
 			console.error('MainController.getAllOrders() :', error);
@@ -58,6 +56,45 @@ class MainController {
 		}
     }
     
+    async getOrderDetails({request,response}) {
+        let orderId = request.params.id;
+        let index;
+        console.log(orderId);
+        try {
+            let jsonReturn = await getSpecificOrder(orderId);
+            let returnArray = [];
+
+            jsonReturn.forEach(json => {
+                if(returnArray.length === 0){
+                    let newJson = this.constructJsonArray(json);
+                    returnArray.push(newJson);
+                }
+                else{
+                    console.log(returnArray);
+                    index = returnArray.findIndex(jsonObject => 
+                        jsonObject.order_id === json.order_id
+                    );
+                    if(index === -1){
+                        let newJson = this.constructJsonArray(json);
+                        returnArray.push(newJson);
+                    }
+                    else {
+                        returnArray[index]['delivery'].push({
+                            'Delivery Created': json['Delivery Created'],
+                            'Delivery Updated': json['Delivery Updated'],
+                            'Delivery Status Name': json['delivery_status_name']
+                        });
+                    }
+                }
+            });
+            console.log(returnArray);
+            // console.log(await returnArray);
+            response.json(await returnArray);
+		} catch (error) {
+			console.error('MainController.getOrderDetails() :', error);
+			return response.status(500).send({message: 'Error in retrieving from the DB'});		
+		}
+    }
     async addOrder ({request, response}) {
         const body = request.post();
 

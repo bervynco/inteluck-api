@@ -23,6 +23,28 @@ class Orders extends Model {
             .orderBy('Delivery Created');
 		return orderList;
     }
+
+    async getSpecificOrder(orderId) {
+        let orderList = [];
+		
+        orderList = await Database.table('orders')
+            .select('delivery.delivery_id')
+            .select('orders.order_id')
+            .select('orders.order_description')
+            .select('orders.order_origin_address')
+            .select('orders.order_destination_address')
+            .select('orders.created_at as Order Created')
+            .select('delivery.created_at as Delivery Created')
+            .select('delivery.updated_at as Delivery Updated')
+            .select('delivery_status.delivery_status_name')
+            .where('active', 1)
+            .where('orders.order_id', orderId)
+            .rightJoin('delivery', 'orders.order_id', 'delivery.order_id')
+            .leftJoin('delivery_status', 'delivery_status.delivery_status_id', 'delivery.delivery_status_id')
+            .orderBy('Delivery Created');
+
+		return orderList;
+    }
     async addOrder (orders) {
         let postRequest = orders;
         let order = await Database.table('orders')
