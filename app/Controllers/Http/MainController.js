@@ -1,7 +1,7 @@
 'use strict'
 const OrderList = require('../../Models/Orders');
 const Delivery = require('../../Models/Delivery');
-const {getAllOrders, getSpecificOrder, addOrder, updateOrder, deleteOrder} = new OrderList();
+const {getAllOrders, getSpecificOrder, addOrder, updateOrder, deleteOrder, getNewOrderId} = new OrderList();
 
 const {addDelivery} = new Delivery();
 class MainController {
@@ -130,6 +130,18 @@ class MainController {
             response.json(await deleteOrder(orderId));
         } catch (error) {
             console.error('MainController.deleteOrder() :', error);
+            return response.status(500).send({message: 'Error in retrieving from the DB'});		
+        }
+    }
+
+    async getNewOrderId({request, response}) {
+        try {
+            let jsonReturn = await getNewOrderId();
+            let orderId = jsonReturn.order_id;
+            let newOrderId = parseInt(orderId.split("-")[1]) + 1;
+            response.json({"order_id": "INT-" + newOrderId});
+        } catch (error) {
+            console.error('MainController.getNewOrderId() :', error);
             return response.status(500).send({message: 'Error in retrieving from the DB'});		
         }
     }

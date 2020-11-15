@@ -4,11 +4,18 @@
 const Model = use('Model')
 const Database = use('Database')
 class Orders extends Model {
+
+    async getNewOrderId() {
+        let orderDetail = await Database.table('orders')
+                .select("*")
+                .last('orders.order_id')
+        return orderDetail;
+    }
     async getAllOrders () {
 		let orderList = [];
 		
         orderList = await Database.table('orders')
-            .select('delivery.delivery_id')
+            .select('orders.order_id')
             .select('orders.order_id')
             .select('orders.order_description')
             .select('orders.order_origin_address')

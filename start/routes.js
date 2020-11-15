@@ -18,10 +18,11 @@ const Route = use('Route')
 
 Route.on('/').render('welcome')
 
-Route.get('/getOrderList', 'MainController.getOrderList')
-Route.get('/getDeliveryStatus', 'DeliveryStatusController.getDeliveryStatusList')
-
+Route.get('/getOrderList', 'MainController.getOrderList');
+Route.get('/getDeliveryStatus', 'DeliveryStatusController.getDeliveryStatusList');
+Route.get('/getNewOrderId', 'MainController.getNewOrderId');
 Route.get('/getOrderDetails/:id','MainController.getOrderDetails');
-Route.post('/addOrder','MainController.addOrder')
-Route.post('/updateOrder','MainController.editOrder')
-Route.post('/deleteOrder','MainController.deleteOrder')
+
+Route.post('/addOrder','MainController.addOrder');
+Route.post('/updateOrder','MainController.editOrder');
+Route.post('/deleteOrder','MainController.deleteOrder');
